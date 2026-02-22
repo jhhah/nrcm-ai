@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NARSIMHA REDDY ENGINEERING COLLEGE AI ASSISTANT</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .page {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+      text-align: center;
+      padding-top: 60px;
+      position: relative;
+    }
+
+    #page1 {
+      display: block;
+      background: url('screenshot5.png') no-repeat center center;
+      background-size: cover;
+      color: white;
+    }
+
+    #page1::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: -1;
+    }
+
+    .big-btn {
+      font-size: 32px;
+      padding: 25px 50px;
+      border-radius: 12px;
+      border: 2px solid #fff;
+      background: rgba(0,0,0,0.5);
+      cursor: pointer;
+      margin: 20px;
+      width: 60%;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .back-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      padding: 10px 18px;
+      font-size: 16px;
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      width: 80%;
+      margin: auto;
+    }
+
+    .branch-box {
+      background: #2563eb;
+      color: white;
+      padding: 25px;
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .chat-container {
+      width: 100vw;
+      height: 100vh;
+      background: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: #2563eb;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .chat-box {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: #f9fafb;
+    }
+
+    .message {
+      margin: 10px 0;
+      padding: 10px 14px;
+      border-radius: 10px;
+      max-width: 80%;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .user { background: #2563eb; color: white; margin-left: auto; }
+    .bot { background: #e5e7eb; color: black; }
+
+    .input-area {
+      display: flex;
+      padding: 15px;
+      border-top: 1px solid #ddd;
+      background: white;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .input-area button {
+      margin-left: 10px;
+      padding: 10px 15px;
+      border: none;
+      background: #2563eb;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="page1" class="page">
+  <h1>Select an Option</h1>
+  <button class="big-btn" onclick="showPage('page2')">STUDENT</button><br>
+  <button class="big-btn" onclick="showPage('chatPage')">ENQUIRY</button>
+</div>
+
+<div id="page2" class="page">
+  <button class="back-btn" onclick="showPage('page1')">⬅ Back</button>
+  <h2>Select Your Branch</h2>
+  <div class="grid-container">
+    <div class="branch-box" onclick="showPage('chatPage')">EEE</div>
+    <div class="branch-box" onclick="showPage('chatPage')">CSE - AIML</div>
+    <div class="branch-box" onclick="showPage('chatPage')">CSE - CYBER SECURITY</div>
+    <div class="branch-box" onclick="showPage('chatPage')">CSE (GENERAL)</div>
+    <div class="branch-box" onclick="showPage('chatPage')">INFORMATION TECHNOLOGY</div>
+    <div class="branch-box" onclick="showPage('chatPage')">ECE</div>
+    <div class="branch-box" onclick="showPage('chatPage')">CIVIL ENGINEERING</div>
+    <div class="branch-box" onclick="showPage('chatPage')">MECHANICAL ENGINEERING</div>
+    <div class="branch-box" onclick="showPage('chatPage')">MBA</div>
+    <div class="branch-box" onclick="showPage('chatPage')">FME</div>
+  </div>
+</div>
+
+<div id="chatPage" class="page">
+  <button class="back-btn" onclick="showPage('page1')">⬅ Back</button>
+  <div class="chat-container">
+    <div class="header">
+      NARSIMHA REDDY ENGINEERING COLLEGE AI ASSISTANT
+    </div>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Type your question..."
+             onkeydown="if(event.key==='Enter') sendMessage()">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function showPage(pageId) {
+  document.querySelectorAll(".page").forEach(p => p.style.display = "none");
+  document.getElementById(pageId).style.display = "block";
+  if (pageId === "chatPage") loadChatPage();
+}
+
+function addMessage(text, sender) {
+  const chatBox = document.getElementById("chatBox");
+  const msg = document.createElement("div");
+  msg.classList.add("message", sender);
+  msg.innerHTML = text;
+  chatBox.appendChild(msg);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function loadChatPage() {
+  document.getElementById("chatBox").innerHTML = "";
+  addMessage("🎉 Welcome to NRCM AI Assistant. Ask anything about admissions, courses, placements, campus, etc.", "bot");
+}
+
+async function sendMessage() {
+  const input = document.getElementById("userInput");
+  const message = input.value.trim();
+  if (message === "") return;
+
+  addMessage(message, "user");
+  input.value = "";
+
+  const loading = document.createElement("div");
+  loading.classList.add("message", "bot");
+  loading.innerHTML = "Typing...";
+  document.getElementById("chatBox").appendChild(loading);
+
+  try {
+    const response = await fetch("http://localhost:5000/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message })
+    });
+
+    const data = await response.json();
+    loading.remove();
+    addMessage(data.reply, "bot");
+
+  } catch (error) {
+    loading.remove();
+    addMessage("❌ Unable to connect to AI server.", "bot");
+  }
+}
+</script>
+
+</body>
+</html>
